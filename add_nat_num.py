@@ -11,16 +11,18 @@ def short(max):
         if fivemaxhit and threemaxhit: break
         if not fivemaxhit:
             fiver = x * 5
-            if not fiver in nums and fiver < max: 
-                res += fiver
-                nums[fiver] = 1
+            if fiver < max:
+                if not fiver in nums:
+                    res += fiver
+                    nums[fiver] = 1
             else:
                 fivemaxhit = True
         if not threemaxhit:
             threer = x * 3
-            if not threer in nums and threer < max: 
-                res += threer
-                nums[threer] = 1
+            if threer < max:
+                if not threer in nums:
+                    res += threer
+                    nums[threer] = 1
             else:
                 threemaxhit = True
     return res
