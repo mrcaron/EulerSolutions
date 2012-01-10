@@ -1,1 +1,1 @@
-My personal solutions to the (Euler project)[http://projecteuler.net].
+My personal solutions to the [Euler project](http://projecteuler.net).
