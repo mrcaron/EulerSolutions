@@ -12,13 +12,14 @@ def comprehend(max):
     return sum([x for x in range(max) if x%3 == 0 or x%5 == 0])
 
 def rang(max):
-    val = sum(range(0,max,3)) + sum(range(0,max,5)) - sum(range(0,1000,15))
+    return sum(range(0,max,3)) + sum(range(0,max,5)) - sum(range(0,max,15))
 
 # implementation of summation formula (currently fastest impl!
-def helper_formula(max, multiple):
-    return (((int((max-1)/multiple)) * ((int((max-1)/multiple))+1)) / 2) * multiple
-def formula(max):
-    return helper_formula(max, 3) + helper_formula(max, 5) - helper_formula(max, 15)
+def _series(max, multiple):
+    return (((int((max-1)/multiple)) * (int((max-1)/multiple)+1)) / 2) * multiple
+
+def series(max):
+    return _series(max, 3) + _series(max, 5) - _series(max, 15)
 
 def short(max):
     res = 0
@@ -55,6 +56,22 @@ def obvious(max):
         if (x % 5 == 0 or x % 3 == 0): res += x
     return res
 
+def _charles(max,d):
+    res = 0
+#    i=0
+#    while i < max:
+#        res += i
+#        i += d
+    for i in range(0,max,d):
+        res += i
+    return res
+def charles(max):
+    res = 0
+    res += _charles(max,3)
+    res += _charles(max,5)
+    res -= _charles(max,15)
+    return res
+
 def sumquick(max):
     return sum([int(n) for n in range(max) if n%3 == 0 or n%5 == 0])
 
@@ -72,7 +89,7 @@ def _runtimed(alg, *set):
         elapsed = (clock() - start)
         vals.append(res)
         times.append(elapsed)
-        #print "Result (%s(%d)): %s, in %.7f seconds" % (algname, n, res, elapsed)
+        print "Result (%s(%d)): %s" % (algname, n, res)
     return times
 
 if __name__ == "__main__":
