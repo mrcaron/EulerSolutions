@@ -1,3 +1,6 @@
+import operator
+import inspect
+
 def setunion(max):
     return sum(list(set([i for i in range(3,max,3)]).union(set([j for j in range(5,max,5)]))))
 
@@ -12,10 +15,10 @@ def rang(max):
     val = sum(range(0,max,3)) + sum(range(0,max,5)) - sum(range(0,1000,15))
 
 # implementation of summation formula (currently fastest impl!
-def formulaHelper(max, multiple):
+def helper_formula(max, multiple):
     return (((int((max-1)/multiple)) * ((int((max-1)/multiple))+1)) / 2) * multiple
 def formula(max):
-    return formulaHelper(max, 3) + formulaHelper(max, 5) - formulaHelper(max, 15)
+    return helper_formula(max, 3) + helper_formula(max, 5) - helper_formula(max, 15)
 
 def short(max):
     res = 0
@@ -44,27 +47,43 @@ def short(max):
 
 # this can be written concisely as:
 #    reduce(add,[x for x in range(max) if x % 3 == 0 or x % 5 == 0])
+# or:
+#    sum([int(n) for n in range(max) if n%3 == 0 or x%5 == 0])
 def obvious(max):
     res = 0
     for x in range(max):
         if (x % 5 == 0 or x % 3 == 0): res += x
     return res
 
-def runtimed(alg, *set):
+def sumquick(max):
+    return sum([int(n) for n in range(max) if n%3 == 0 or n%5 == 0])
+
+def reduceadd(max):
+    return reduce(operator.add,[x for x in range(max) if x % 3 == 0 or x % 5 == 0])
+
+def _runtimed(alg, *set):
     from time import clock, time
     algname = alg.__name__
+    times = []
+    vals = []
     for n in set:
         start = clock()
         res = alg(n)
         elapsed = (clock() - start)
-        print "Result (%s(%d)): %s, in %.7f seconds" % (algname, n, res, elapsed)
+        vals.append(res)
+        times.append(elapsed)
+        #print "Result (%s(%d)): %s, in %.7f seconds" % (algname, n, res, elapsed)
+    return times
 
 if __name__ == "__main__":
-    runtimed(short, 1000)
-    runtimed(obvious, 1000)
-    runtimed(reduced, 1000)
-    runtimed(rang, 1000)
-    runtimed(formula, 1000)
-    runtimed(comprehend, 1000)
-    runtimed(setunion, 1000)
+    loc = locals()
+    names = filter(lambda x: not '_' in x and inspect.isfunction(loc[x]), loc)
+    times = [ _runtimed(loc[name], 1000)[0] for name in names]
+    time_name = dict(zip([hash(x) for x in times],names))
+
+    for t in sorted(times):
+        print "%s ran in %.7f" % (time_name[hash(t)], t)
+
+#    fastest = sorted(times.values())
+
     
