@@ -5,8 +5,8 @@ import operator
 def sumFibo(n):
     return sum(i for i in fibo2(upto=n) if not i%2)
 
-def fibo2(a=-1,b=1,upto=4000000):
-    while a+b < upto:
+def fibo2(a=-1,b=1,limit=4000000):
+    while a+b < limit:
         a,b = b,a+b
         yield b
 
